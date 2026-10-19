@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Hospital e Maternidade Beneficência Portuguesa de Santo André</title>
+<meta name="description" content="Hospital e Maternidade Beneficência Portuguesa de Santo André. Pronto-atendimento 24 horas, consultas, exames, maternidade e internação.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1638A8;
+    --marinho:#0B1F5C;
+    --tinta:#0E1A33;
+    --texto-suave:#4A5878;
+    --azul-claro:#DCE4FA;
+    --fundo:#F4F6FB;
+    --borda:#E3E8F3;
+    --verde:#1FAE6E;
+    --verde-texto:#127A4E;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fundo);color:var(--tinta);font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  svg{flex-shrink:0}
+  .container{max-width:1360px;margin:0 auto;padding:0 24px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  :focus-visible{outline:3px solid #7FA2FF;outline-offset:2px}
+
+  /* ---------- Barra utilitária ---------- */
+  .util{background:var(--marinho);color:var(--azul-claro);font-size:13px}
+  .util .container{height:40px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .util-left,.util-right{display:flex;align-items:center;gap:20px}
+  .util a{display:inline-flex;align-items:center;gap:6px;color:var(--azul-claro);transition:color .2s}
+  .util a:hover{color:#fff}
+  .status-24h{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:600}
+  .ponto{width:8px;height:8px;border-radius:50%;background:#3DDC97;display:inline-block;box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulsar 2s infinite}
+  @keyframes pulsar{0%{box-shadow:0 0 0 0 rgba(61,220,151,.6)}70%{box-shadow:0 0 0 8px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
+
+  /* ---------- Cabeçalho ---------- */
+  .header{background:#fff;border-bottom:1px solid var(--borda);position:sticky;top:0;z-index:50}
+  .header .container{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-img{height:60px;width:auto;display:block}
+  .logo-texto{display:flex;flex-direction:column;line-height:1.15;white-space:nowrap}
+  .logo-nome{font-weight:800;font-size:18px;letter-spacing:-.2px;color:var(--marinho)}
+  .logo-sub{font-weight:500;font-size:12px;color:var(--texto-suave);letter-spacing:.3px}
+
+  .nav{display:flex;align-items:center;gap:24px;white-space:nowrap;margin:0;padding:0;font-size:15px;font-weight:600}
+  .nav > li{list-style:none;position:relative}
+  .nav ul{margin:0;padding:0}
+  .nav-link{display:inline-flex;align-items:center;gap:4px;padding:10px 0;color:var(--tinta);transition:color .2s;background:none;border:0;font-size:15px;font-weight:600;cursor:pointer}
+  .nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--azul)}
+  .nav-link svg{transition:transform .2s}
+  .nav-link[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .submenu{position:absolute;top:100%;left:-16px;min-width:240px;background:#fff;border:1px solid var(--borda);border-radius:16px;box-shadow:0 18px 40px rgba(8,24,74,.14);padding:8px;list-style:none;opacity:0;visibility:hidden;transform:translateY(6px);transition:all .2s}
+  .submenu.aberto{opacity:1;visibility:visible;transform:translateY(0)}
+  .submenu a{display:block;padding:10px 14px;border-radius:10px;font-weight:500;color:var(--tinta)}
+  .submenu a:hover{background:var(--fundo);color:var(--azul)}
+
+  .acoes{display:flex;align-items:center;gap:10px}
+  .btn-icone{width:44px;height:44px;border-radius:50%;border:1px solid #D5DCEB;background:#fff;color:var(--marinho);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+  .btn-icone:hover{background:var(--fundo)}
+  .btn-agendar{white-space:nowrap;height:44px;padding:0 22px;border-radius:999px;background:var(--azul);color:#fff;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+  .btn-agendar:hover{background:var(--marinho)}
+  .btn-menu{display:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--marinho);color:#fff;align-items:center;justify-content:center;cursor:pointer}
+
+  /* ---------- Menu mobile (gaveta) ---------- */
+  .gaveta{position:fixed;inset:0;z-index:100;visibility:hidden}
+  .gaveta.aberta{visibility:visible}
+  .gaveta-fundo{position:absolute;inset:0;background:rgba(8,24,74,.5);opacity:0;transition:opacity .25s}
+  .gaveta.aberta .gaveta-fundo{opacity:1}
+  .gaveta-painel{position:absolute;top:0;right:0;bottom:0;width:min(360px,88vw);background:#fff;padding:20px;display:flex;flex-direction:column;gap:8px;transform:translateX(100%);transition:transform .3s;overflow-y:auto}
+  .gaveta.aberta .gaveta-painel{transform:translateX(0)}
+  .gaveta-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .gaveta-painel a.item{display:block;padding:14px 12px;border-radius:12px;font-weight:600;font-size:16px}
+  .gaveta-painel a.item:hover{background:var(--fundo);color:var(--azul)}
+  .gaveta-painel .btn-agendar{justify-content:center;margin-top:12px;height:50px}
+
+  /* ---------- Slider ---------- */
+  .hero-wrap{max-width:1392px;margin:0 auto;padding:16px 16px 32px}
+  .hero{position:relative;min-height:640px;border-radius:28px;overflow:hidden;background:var(--marinho);display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+  .slide-midia{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;z-index:0}
+  .slide-midia.ativo{opacity:1}
+  .slide-midia img{width:100%;height:100%;object-fit:cover;object-position:70% 40%;transform:scale(1.04);transition:transform 7s ease}
+  .slide-midia.ativo img{transform:scale(1)}
+  /* Foto posicionada à direita, com a borda esquerda se dissolvendo no azul */
+  .slide-midia.direita{background:var(--marinho)}
+  .slide-midia.direita img{position:absolute;top:0;right:0;width:70%;object-position:50% 30%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
+  /* Slide 3 — coração 3D */
+  .slide-coracao{background:radial-gradient(circle at 68% 50%,#3346C8 0%,#1A2C8C 28%,#0B1F5C 62%)}
+  .slide-midia.slide-coracao{z-index:2;pointer-events:none}
+  .coracao-wrap{position:absolute;top:50%;left:59%;height:90%;aspect-ratio:663/1000;transform:translate(-50%,-50%);animation:flutuar 6s ease-in-out infinite}
+  .coracao-img{width:100%;height:100%;object-fit:contain;display:block;transform-origin:50% 60%;filter:drop-shadow(0 0 40px rgba(255,79,154,.35)) drop-shadow(0 0 80px rgba(63,140,255,.35));animation:batimento 1.2s ease-in-out infinite}
+  @keyframes flutuar{0%,100%{transform:translate(-50%,-50%) rotate(-2deg)}50%{transform:translate(-50%,-53%) rotate(2deg)}}
+  @keyframes batimento{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.045)}20%{transform:scale(1)}28%{transform:scale(1.025)}}
+  .card-ecg{position:absolute;top:32px;right:32px;z-index:3;padding:14px 18px 10px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;display:flex;flex-direction:column;gap:4px}
+  .card-ecg-rotulo{font-size:13px;font-weight:600;color:var(--azul-claro)}
+  .linha-ecg{stroke-dasharray:420;stroke-dashoffset:420;animation:ecg 2.4s linear infinite}
+  @keyframes ecg{to{stroke-dashoffset:0}}
+  .placeholder{position:absolute;inset:0;background:var(--azul);display:flex;align-items:center;justify-content:flex-end;padding-right:8%}
+  .placeholder span{width:38%;min-width:260px;aspect-ratio:4/3;border:2px dashed rgba(255,255,255,.55);border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;text-align:center;padding:16px}
+  .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,24,74,.94) 0%,rgba(8,24,74,.82) 34%,rgba(8,24,74,.35) 58%,rgba(8,24,74,0) 74%)}
+
+  .hero-conteudo{position:relative;z-index:2;padding:56px 56px 40px;max-width:680px;color:#fff;display:flex;flex-direction:column;gap:22px}
+  .slide-texto{display:flex;flex-direction:column;gap:22px;transition:opacity .35s,transform .35s}
+  .slide-texto.saindo{opacity:0;transform:translateY(8px)}
+  .selo{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);font-size:13px;font-weight:600;letter-spacing:.4px}
+  .hero h1,.hero h2.titulo{margin:0;font-size:56px;line-height:1.05;font-weight:800;letter-spacing:-1.4px}
+  .hero p{margin:0;font-size:18px;line-height:1.55;color:var(--azul-claro);max-width:520px}
+  .botoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+  .btn-branco{height:52px;padding:0 26px;border-radius:999px;background:#fff;color:var(--marinho);font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:transform .2s}
+  .btn-branco:hover{transform:translateY(-1px)}
+  .btn-contorno{height:52px;padding:0 24px;border-radius:999px;border:1.5px solid rgba(255,255,255,.6);color:#fff;font-weight:600;font-size:16px;display:inline-flex;align-items:center;transition:background .2s}
+  .btn-contorno:hover{background:rgba(255,255,255,.1)}
+
+
+  .controles{display:flex;align-items:center;gap:16px;margin-top:32px}
+  .contador{font-size:14px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
+  .pontos{display:flex;gap:6px;align-items:center}
+  .pontos button{height:6px;width:14px;border:0;padding:0;cursor:pointer;border-radius:999px;background:rgba(255,255,255,.4);transition:all .3s;position:relative}
+  .pontos button::before{content:"";position:absolute;inset:-19px -4px}
+  .pontos button[aria-current="true"]{width:36px;background:#fff}
+  .setas{display:flex;gap:8px;margin-left:8px}
+  .seta{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+  .seta:hover{background:rgba(255,255,255,.12)}
+  .seta.cheia{background:#fff;color:var(--marinho);border:0}
+  .seta.cheia:hover{background:var(--azul-claro)}
+
+  .card-pa{position:absolute;z-index:2;right:32px;bottom:32px;width:320px;background:#fff;border-radius:20px;padding:20px;box-shadow:0 18px 40px rgba(8,24,74,.22);display:flex;flex-direction:column;gap:14px}
+  .card-pa-topo{display:flex;align-items:center;gap:12px}
+  .card-pa-icone{width:44px;height:44px;border-radius:12px;background:#E8EDFB;color:var(--azul);display:inline-flex;align-items:center;justify-content:center}
+  .card-pa strong{display:block;font-weight:800;font-size:16px;color:var(--marinho)}
+  .card-pa .aberto{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--verde-texto)}
+  .card-pa .aberto i{width:7px;height:7px;border-radius:50%;background:var(--verde);display:inline-block}
+  .card-pa p{margin:0;font-size:14px;line-height:1.5;color:var(--texto-suave)}
+  .card-pa .ligar{height:46px;border-radius:12px;background:var(--marinho);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+  .card-pa .ligar:hover{background:var(--azul)}
+
+
+  /* =========================================================
+     HOME — seções abaixo do slider
+     ========================================================= */
+  html{scroll-behavior:smooth;scroll-padding-top:100px}
+  .secao{padding:96px 0}
+  .secao-branca{background:#fff}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--azul)}
+  .kicker::before{content:"";width:22px;height:2px;background:#E9A92B;border-radius:2px}
+  .titulo-secao{margin:14px 0 0;font-size:44px;line-height:1.08;font-weight:800;letter-spacing:-1.1px;color:var(--marinho)}
+  .lead{margin:18px 0 0;font-size:18px;line-height:1.6;color:var(--texto-suave);max-width:620px}
+  .cabeca-secao{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 32px;flex-wrap:wrap;margin-bottom:48px}
+  .link-seta{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--azul);transition:gap .2s}
+  .link-seta:hover{gap:12px}
+  .btn-azul{height:52px;padding:0 26px;border-radius:999px;background:var(--azul);color:#fff;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:background .2s}
+  .btn-azul:hover{background:var(--marinho)}
+
+  /* Atendimento rápido */
+  .atalhos{padding:8px 0 24px}
+  .atalhos-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .atalho{background:#fff;border:1px solid var(--borda);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:transform .25s,box-shadow .25s,border-color .25s}
+  a.atalho:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(8,24,74,.1);border-color:#C9D4F2}
+  .atalho-icone{width:48px;height:48px;border-radius:14px;background:#E8EDFB;color:var(--azul);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .atalho.destaque{background:var(--marinho);border-color:var(--marinho);color:#fff}
+  .atalho.destaque .atalho-icone{background:rgba(255,255,255,.12);color:#fff}
+  .atalho h3{margin:4px 0 0;font-size:18px;font-weight:800;color:var(--marinho)}
+  .atalho.destaque h3{color:#fff}
+  .atalho p{margin:0;font-size:14.5px;line-height:1.5;color:var(--texto-suave)}
+  .atalho.destaque p{color:var(--azul-claro)}
+  .atalho .tel{margin-top:auto;padding-top:6px;font-weight:800;font-size:17px;display:flex;flex-direction:column;gap:2px;color:var(--marinho)}
+  .atalho.destaque .tel{color:#fff}
+  .atalho .tel small{font-weight:500;font-size:13px;opacity:.8}
+  .atalho .tel a{color:inherit}
+  .atalho .mais{margin-top:auto;padding-top:6px;font-weight:700;font-size:15px;color:var(--azul);display:inline-flex;align-items:center;gap:6px}
+
+  /* O Hospital */
+  .sobre{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:72px;align-items:center}
+  .sobre-foto{position:relative}
+  .sobre-foto > img{width:100%;aspect-ratio:5/4;object-fit:cover;object-position:62% 50%;border-radius:28px;display:block}
+  .selo-ano{position:absolute;left:-20px;bottom:32px;background:#fff;border-radius:22px;padding:16px 22px;box-shadow:0 18px 40px rgba(8,24,74,.16);display:flex;align-items:center;gap:14px}
+  .selo-ano img{width:34px;height:auto}
+  .selo-ano strong{display:block;font-size:24px;font-weight:800;color:var(--marinho);line-height:1.1}
+  .selo-ano span{font-size:13px;color:var(--texto-suave);font-weight:500}
+  .lista-check{list-style:none;margin:28px 0 32px;padding:0;display:flex;flex-direction:column;gap:14px}
+  .lista-check li{display:flex;gap:12px;align-items:flex-start;font-size:16px;font-weight:600;color:var(--tinta)}
+  .lista-check svg{color:var(--azul);margin-top:1px}
+
+  /* Serviços */
+  .servicos-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .servico{position:relative;background:var(--fundo);border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:12px;overflow:hidden;transition:background .3s,transform .3s}
+  .servico:hover{background:var(--marinho);transform:translateY(-4px)}
+  .servico-icone{width:56px;height:56px;border-radius:16px;background:#fff;color:var(--azul);display:inline-flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
+  .servico:hover .servico-icone{background:rgba(255,255,255,.12);color:#fff}
+  .servico h3{margin:10px 0 0;font-size:21px;font-weight:800;color:var(--marinho);transition:color .3s}
+  .servico p{margin:0;font-size:15px;line-height:1.6;color:var(--texto-suave);transition:color .3s}
+  .servico .mais{margin-top:auto;padding-top:6px;font-weight:700;font-size:15px;color:var(--azul);display:inline-flex;align-items:center;gap:6px;transition:color .3s}
+  .servico:hover h3,.servico:hover .mais{color:#fff}
+  .servico:hover p{color:var(--azul-claro)}
+  .servico .num{position:absolute;top:28px;right:30px;font-size:14px;font-weight:700;color:#97A6CB;font-variant-numeric:tabular-nums;transition:color .3s}
+  .servico:hover .num{color:rgba(255,255,255,.55)}
+
+  /* Maternidade */
+  .mat{position:relative;border-radius:32px;overflow:hidden;background:var(--marinho);color:#fff;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:560px}
+  .mat-texto{padding:72px 64px;display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1}
+  .mat .kicker{color:#AFC3FF}
+  .mat h2{margin:0;font-size:44px;line-height:1.08;font-weight:800;letter-spacing:-1.1px}
+  .mat p{margin:0;font-size:17px;line-height:1.6;color:var(--azul-claro)}
+  .mat-etapas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 12px}
+  .mat-etapa{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:16px}
+  .mat-etapa b{display:block;font-size:13px;color:#F2BC4E;font-weight:800;letter-spacing:1px;margin-bottom:6px}
+  .mat-etapa span{font-size:15px;font-weight:700}
+  .mat-foto{position:relative}
+  .mat-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:45% 30%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}
+
+  /* Convênios */
+  .conv{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px;align-items:center}
+  .conv-lista{display:flex;flex-wrap:wrap;gap:12px}
+  .conv-item{padding:16px 22px;border-radius:16px;background:var(--fundo);border:1px solid var(--borda);font-weight:700;font-size:16px;color:var(--marinho);transition:border-color .2s,transform .2s}
+  .conv-item:hover{border-color:var(--azul);transform:translateY(-2px)}
+  .aviso{display:flex;gap:12px;align-items:flex-start;margin-top:28px;padding:16px 18px;border-radius:16px;background:#FFF6E3;color:#6B4A06;font-size:14.5px;line-height:1.5}
+  .aviso svg{color:#B7791F;margin-top:1px;flex-shrink:0}
+
+  /* Contato */
+  .contato{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px;align-items:stretch}
+  .contato-card{background:#fff;border:1px solid var(--borda);border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:28px}
+  .contato-linha{display:flex;gap:16px;align-items:flex-start}
+  .contato-linha h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--marinho)}
+  .contato-linha p{margin:0;font-size:15px;line-height:1.6;color:var(--texto-suave)}
+  .contato-linha a{color:var(--azul);font-weight:700}
+  .mapa{border-radius:28px;overflow:hidden;min-height:440px;background:#DCE4FA;border:1px solid var(--borda)}
+  .mapa iframe{width:100%;height:100%;min-height:440px;border:0;display:block}
+
+  /* Rodapé */
+  .rodape{background:#081A4F;color:var(--azul-claro);padding:80px 0 0;margin-top:24px}
+  .rodape-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:48px;padding-bottom:56px}
+  .rodape-marca{display:flex;flex-direction:column;gap:20px}
+  .rodape-logo{display:flex;align-items:center;gap:14px}
+  .rodape-logo .badge{width:64px;height:64px;border-radius:18px;background:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .rodape-logo img{height:50px;width:auto}
+  .rodape-logo strong{display:block;color:#fff;font-size:18px;font-weight:800;line-height:1.15}
+  .rodape-logo small{font-size:12.5px;color:#AFC3FF}
+  .rodape p{margin:0;font-size:14.5px;line-height:1.65}
+  .rodape h4{margin:0 0 18px;color:#fff;font-size:15px;font-weight:800;letter-spacing:.3px}
+  .rodape ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  .rodape ul a{font-size:14.5px;color:var(--azul-claro);transition:color .2s}
+  .rodape ul a:hover{color:#fff}
+  .rodape-contato li{display:flex;gap:10px;font-size:14.5px;line-height:1.5}
+  .rodape-contato svg{color:#7FA2FF;margin-top:2px}
+  .rodape-contato a{color:#fff !important;font-weight:700}
+  .rodape-emerg{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:14px;color:#fff;font-weight:600;align-self:flex-start;transition:background .2s}
+  .rodape-emerg:hover{background:rgba(255,255,255,.12)}
+  .rodape-base{border-top:1px solid rgba(255,255,255,.1);padding:24px 0 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;line-height:1.6;color:#A9B8DE}
+  .rodape-base a{color:#C5D2F2}
+  .rodape-base a:hover{color:#fff}
+  .rodape-base .legal{display:flex;gap:20px;flex-wrap:wrap}
+
+  /* Animação de entrada */
+  .js .revelar{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .js .revelar.visivel{opacity:1;transform:none}
+
+  @media (max-width:1100px){
+    .atalhos-grid,.servicos-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .sobre,.conv,.contato{grid-template-columns:minmax(0,1fr);gap:48px}
+    .contato{gap:24px}
+    .mat{grid-template-columns:minmax(0,1fr)}
+    .mat-foto{min-height:380px;order:-1}
+    .mat-foto img{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+    .mat-texto{padding:8px 48px 56px}
+    .rodape-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:760px){
+    .secao{padding:64px 0}
+    .titulo-secao,.mat h2{font-size:32px;letter-spacing:-.6px}
+    .lead{font-size:16px}
+    .atalhos-grid,.servicos-grid{grid-template-columns:minmax(0,1fr)}
+    .container{padding:0 18px}
+    .selo-ano{left:12px;bottom:12px;padding:12px 16px}
+    .selo-ano strong{font-size:20px}
+    .mat{border-radius:24px}
+    .mat-foto{min-height:280px}
+    .mat-texto{padding:8px 24px 40px}
+    .mat-etapas{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .mat-etapa{padding:12px}
+    .mat-etapa span{font-size:13px}
+    .contato-card{padding:28px}
+    .mapa,.mapa iframe{min-height:320px}
+    .rodape{padding-top:56px}
+    .rodape-grid{grid-template-columns:minmax(0,1fr);gap:36px}
+  }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width:1320px){
+    .nav{display:none}
+    .btn-menu{display:inline-flex}
+    .util-right{display:none}
+  }
+  @media (max-width:760px){
+    .util .container{height:auto;padding-top:8px;padding-bottom:8px}
+    .util-left{gap:14px;flex-wrap:wrap}
+    .header .container{height:72px}
+    .logo-img{height:50px}
+    .logo{gap:10px;min-width:0}
+    .logo-texto{white-space:normal;min-width:0}
+    .logo-nome{font-size:15px}
+    .logo-sub{font-size:11px}
+    .btn-agendar.desktop{display:none}
+    .hero-wrap{padding:12px 12px 24px}
+    .hero{min-height:960px;border-radius:22px}
+    .scrim{background:linear-gradient(180deg,rgba(8,24,74,.35) 0%,rgba(8,24,74,.85) 45%,rgba(8,24,74,.96) 100%)}
+    .hero-conteudo{padding:32px 22px 24px}
+    .hero h1,.hero h2.titulo{font-size:36px;letter-spacing:-.8px}
+    .hero p{font-size:16px}
+    .placeholder{justify-content:center;align-items:flex-start;padding:40px 0 0}
+    .placeholder span{width:70%;min-width:0}
+    .slide-midia.direita img{width:100%;object-position:55% 0;-webkit-mask-image:none;mask-image:none}
+    .slide-coracao{background:radial-gradient(circle at 50% 22%,#3346C8 0%,#1A2C8C 30%,#0B1F5C 65%)}
+    .card-ecg{display:none}
+    .coracao-wrap{left:50%;top:150px;height:260px}
+    .card-pa{position:relative;right:auto;bottom:auto;width:auto;margin:0 16px 16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important}
+  }
+</style>
+<link rel="stylesheet" href="agendamento.css">
+</head>
+<body>
+
+<!-- ===================== BARRA UTILITÁRIA ===================== -->
+<div class="util">
+  <div class="container">
+    <div class="util-left">
+      <span class="status-24h"><span class="ponto" aria-hidden="true"></span>Pronto-atendimento 24 horas</span>
+      <a href="tel:+551121985000">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+        (11) 2198-5000
+      </a>
+      <a href="https://wa.me/[NUMERO]" target="_blank" rel="noopener">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg>
+        WhatsApp [NÚMERO]
+      </a>
+    </div>
+    <div class="util-right">
+      <a href="exames.html#resultados">Resultados de exames</a>
+      <a href="#">Trabalhe conosco</a>
+      <a href="#">Ouvidoria</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CABEÇALHO / MENU ===================== -->
+<header class="header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="Beneficência Portuguesa de Santo André — página inicial">
+      <img class="logo-img" src="img/logo.png" alt="" width="37" height="60">
+      <span class="logo-texto">
+        <span class="logo-nome">Beneficência Portuguesa</span>
+        <span class="logo-sub">Hospital e Maternidade · Santo André</span>
+      </span>
+    </a>
+
+    <nav aria-label="Menu principal">
+      <ul class="nav">
+        <li>
+          <button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-hospital">O Hospital
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul class="submenu" id="sub-hospital">
+            <li><a href="institucional.html#historia">Nossa História</a></li>
+            <li><a href="institucional.html#presidente">Palavra da Presidente</a></li>
+            <li><a href="institucional.html#superintendencia">Palavra da Superintendência</a></li>
+            <li><a href="institucional.html#missao">Visão, Missão e Valores</a></li>
+          </ul>
+        </li>
+        <li>
+          <button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-especialidades">Especialidades
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul class="submenu" id="sub-especialidades">
+            <li><a href="#">Cardiologia</a></li>
+            <li><a href="#">Ginecologia e Obstetrícia</a></li>
+            <li><a href="#">Ortopedia e Traumatologia</a></li>
+            <li><a href="pediatria.html">Pediatria</a></li>
+            <li><a href="pediatria.html#esp-lista">Ver todas (27)</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link" href="exames.html">Exames</a></li>
+        <li><a class="nav-link" href="#maternidade">Maternidade</a></li>
+        <li><a class="nav-link" href="convenios.html">Convênios</a></li>
+        <li><a class="nav-link" href="#">Notícias</a></li>
+        <li><a class="nav-link" href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="acoes">
+      <button class="btn-icone" type="button" aria-label="Buscar">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a href="#agendar" data-agendar class="btn-agendar desktop">Agendar consulta
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="btn-menu" type="button" aria-label="Abrir menu" aria-controls="gaveta" aria-expanded="false" id="abrir-menu">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Menu mobile -->
+<div class="gaveta" id="gaveta" aria-hidden="true">
+  <div class="gaveta-fundo" data-fechar></div>
+  <nav class="gaveta-painel" aria-label="Menu">
+    <div class="gaveta-topo">
+      <span class="logo-nome">Menu</span>
+      <button class="btn-icone" type="button" aria-label="Fechar menu" data-fechar>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <a class="item" href="institucional.html">O Hospital</a>
+    <a class="item" href="pediatria.html">Especialidades</a>
+    <a class="item" href="exames.html">Exames</a>
+    <a class="item" href="#maternidade">Maternidade</a>
+    <a class="item" href="convenios.html">Convênios</a>
+    <a class="item" href="#">Notícias</a>
+    <a class="item" href="#contato">Contato</a>
+    <a class="item" href="exames.html#resultados">Resultados de exames</a>
+    <a class="item" href="#">Trabalhe conosco</a>
+    <a class="item" href="#">Ouvidoria</a>
+    <a href="#agendar" data-agendar class="btn-agendar">Agendar consulta</a>
+  </nav>
+</div>
+
+<!-- ===================== SLIDER ===================== -->
+<main>
+<section class="hero-wrap" aria-roledescription="carrossel" aria-label="Destaques">
+  <div class="hero" id="hero">
+
+    <!-- Imagens dos slides (para trocar uma foto, substitua o .placeholder por <img>) -->
+    <div class="slide-midia ativo">
+      <img src="img/fachada.jpg" alt="Fachada e entrada principal do hospital, com marquise de vidro azul" width="1777" height="885" fetchpriority="high">
+    </div>
+    <div class="slide-midia direita">
+      <img src="img/maternidade.jpg" alt="Mãe sorrindo com o recém-nascido no colo, no quarto da maternidade" width="1536" height="1024" loading="lazy">
+    </div>
+    <div class="slide-midia slide-coracao">
+      <div class="coracao-wrap">
+        <img class="coracao-img" src="img/coracao.webp" alt="" aria-hidden="true" width="663" height="1000">
+      </div>
+      <div class="card-ecg" aria-hidden="true">
+        <span class="card-ecg-rotulo">Saúde do coração</span>
+        <svg viewBox="0 0 220 56" width="220" height="56"><path class="linha-ecg" d="M0 30 H58 l8 -4 l6 4 h10 l6 -24 l8 46 l7 -26 h18 l8 -6 l8 6 H220" fill="none" stroke="#7FB2FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+
+    <div class="scrim" aria-hidden="true"></div>
+
+    <div class="hero-conteudo">
+      <div class="slide-texto" id="slide-texto" aria-live="polite">
+        <span class="selo" id="s-selo">Hospital e Maternidade em Santo André</span>
+        <h1 class="titulo" id="s-titulo">Cuidado que acolhe, tradição que inspira confiança.</h1>
+        <p id="s-texto">Atendimento humanizado, estrutura moderna e uma equipe médica pronta para cuidar de você e da sua família.</p>
+        <div class="botoes">
+          <a href="#" class="btn-branco" id="s-cta"><span id="s-cta-texto">Agendar consulta</span>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Portugal,+530,+Santo+Andr%C3%A9+-+SP" target="_blank" rel="noopener" class="btn-contorno">Como chegar</a>
+        </div>
+      </div>
+
+
+      <div class="controles">
+        <span class="contador" id="contador">01 / 03</span>
+        <div class="pontos" id="pontos"></div>
+        <div class="setas">
+          <button class="seta" type="button" aria-label="Slide anterior" id="anterior">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>
+          </button>
+          <button class="seta cheia" type="button" aria-label="Próximo slide" id="proximo">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card flutuante: pronto-atendimento -->
+    <aside class="card-pa" aria-label="Pronto-atendimento">
+      <div class="card-pa-topo">
+        <span class="card-pa-icone" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+        </span>
+        <div>
+          <strong>Pronto-atendimento</strong>
+          <span class="aberto"><i aria-hidden="true"></i>Clínico 24h, todos os dias</span>
+        </div>
+      </div>
+      <p>Av. Portugal, 530 — Jardim Bela Vista<br>Santo André - SP</p>
+      <a href="tel:+551121985000" class="ligar">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+        Ligar: (11) 2198-5000
+      </a>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== ATENDIMENTO RÁPIDO ===================== -->
+<section class="atalhos" aria-label="Atendimento rápido">
+  <div class="container">
+    <div class="atalhos-grid">
+      <div class="atalho destaque revelar">
+        <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
+        <h3>Pronto-atendimento clínico</h3>
+        <p>Aberto 24 horas, todos os dias.</p>
+        <div class="tel"><a href="tel:+551121985000">(11) 2198-5000</a><small>Ramal 3130</small></div>
+      </div>
+      <div class="atalho revelar">
+        <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10c.7-.7 1.7-.7 2.6-.4a2.5 2.5 0 1 0-1.7-4.4 2.5 2.5 0 1 0-4.4-1.7c.3.9.3 1.9-.4 2.6l-6.6 6.6c-.7.7-1.7.7-2.6.4a2.5 2.5 0 1 0 1.7 4.4 2.5 2.5 0 1 0 4.4 1.7c-.3-.9-.3-1.9.4-2.6z"/></svg></span>
+        <h3>Pronto-atendimento ortopédico</h3>
+        <p>Todos os dias, das 8h às 21h.</p>
+        <div class="tel"><a href="tel:+551121985000">(11) 2198-5000</a><small>Ramal 3150</small></div>
+      </div>
+      <a href="#agendar" data-agendar class="atalho revelar">
+        <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h2M8 18h2M14 14h2"/></svg></span>
+        <h3>Agendar consulta</h3>
+        <p>Escolha a data e o horário online, em poucos passos.</p>
+        <span class="mais">Agendar <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="exames.html#resultados" class="atalho revelar">
+        <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span>
+        <h3>Resultados de exames</h3>
+        <p>Consulte seus resultados online, quando quiser.</p>
+        <span class="mais">Acessar <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== O HOSPITAL ===================== -->
+<section class="secao" id="hospital">
+  <div class="container sobre">
+    <div class="sobre-foto revelar">
+      <img src="img/fachada.jpg" alt="Entrada principal do hospital na Av. Portugal" width="1777" height="885" loading="lazy">
+      <div class="selo-ano">
+        <img src="img/logo.png" alt="" width="37" height="60">
+        <div><strong>Desde 1930</strong><span>cuidando de Santo André</span></div>
+      </div>
+    </div>
+    <div class="revelar">
+      <span class="kicker">O Hospital</span>
+      <h2 class="titulo-secao">Tradição portuguesa a serviço da saúde de Santo André.</h2>
+      <p class="lead">Mantido pela Sociedade Portuguesa de Beneficência de Santo André, o hospital reúne pronto-atendimento, maternidade, internação e exames de diagnóstico em um só lugar, no Jardim Bela Vista.</p>
+      <ul class="lista-check">
+        <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg> Pronto-atendimento clínico 24 horas</li>
+        <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg> Raio-X, tomografia e laboratório no próprio hospital</li>
+        <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg> Equipes com título de especialista em suas áreas</li>
+      </ul>
+      <a href="institucional.html" class="btn-azul">Conheça o hospital <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVIÇOS ===================== -->
+<section class="secao secao-branca" id="servicos">
+  <div class="container">
+    <div class="cabeca-secao revelar">
+      <div>
+        <span class="kicker">Serviços</span>
+        <h2 class="titulo-secao">Como podemos cuidar de você</h2>
+      </div>
+      <a href="pediatria.html#esp-lista" class="link-seta">Ver todas as especialidades <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="servicos-grid">
+        <a href="#" class="servico revelar">
+          <span class="num">01</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
+          <h3>Pronto-atendimento clínico</h3>
+          <p>Atendimento de urgência e emergência em clínica médica, 24 horas por dia, com salas de emergência equipadas.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#" class="servico revelar">
+          <span class="num">02</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10c.7-.7 1.7-.7 2.6-.4a2.5 2.5 0 1 0-1.7-4.4 2.5 2.5 0 1 0-4.4-1.7c.3.9.3 1.9-.4 2.6l-6.6 6.6c-.7.7-1.7.7-2.6.4a2.5 2.5 0 1 0 1.7 4.4 2.5 2.5 0 1 0 4.4 1.7c-.3-.9-.3-1.9.4-2.6z"/></svg></span>
+          <h3>Pronto-atendimento ortopédico</h3>
+          <p>Atendimento a fraturas, entorses e lesões, todos os dias das 8h às 21h.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#" class="servico revelar">
+          <span class="num">03</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M9.5 8h.01M14.5 8h.01M10 10.5a3 3 0 0 0 4 0"/><path d="M6 21a6 6 0 0 1 12 0"/></svg></span>
+          <h3>Maternidade</h3>
+          <p>Cuidado com a gestante, o parto e o recém-nascido, com uma equipe dedicada às mães e aos bebês.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#" class="servico revelar">
+          <span class="num">04</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 6v12M8.5 9h7M8 12h8M8.5 15h7"/></svg></span>
+          <h3>Diagnóstico por imagem</h3>
+          <p>Raio-X e tomografia computadorizada para diagnósticos rápidos e precisos.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#" class="servico revelar">
+          <span class="num">05</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg></span>
+          <h3>Laboratório</h3>
+          <p>Exames laboratoriais realizados no próprio hospital, com apoio ao diagnóstico e ao tratamento.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#" class="servico revelar">
+          <span class="num">06</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9M10 12h6"/></svg></span>
+          <h3>Internação</h3>
+          <p>Estrutura de internação com equipe de enfermagem preparada para cuidar de você.</p>
+          <span class="mais">Saiba mais <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MATERNIDADE ===================== -->
+<section class="secao" id="maternidade">
+  <div class="container">
+    <div class="mat revelar">
+      <div class="mat-texto">
+        <span class="kicker">Maternidade</span>
+        <h2>Do pré-natal aos primeiros dias com o bebê.</h2>
+        <p>Uma maternidade preparada para receber você e sua família com segurança, acolhimento e uma equipe que acompanha cada etapa desse momento.</p>
+        <div class="mat-etapas">
+          <div class="mat-etapa"><b>01</b><span>Pré-natal</span></div>
+          <div class="mat-etapa"><b>02</b><span>Parto</span></div>
+          <div class="mat-etapa"><b>03</b><span>Recém-nascido</span></div>
+        </div>
+        <div class="botoes">
+          <a href="#" class="btn-branco">Conhecer a maternidade <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="#contato" class="btn-contorno">Agendar visita</a>
+        </div>
+      </div>
+      <div class="mat-foto">
+        <img src="img/maternidade.jpg" alt="Mãe com o recém-nascido no colo" width="1536" height="1024" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONVÊNIOS ===================== -->
+<section class="secao secao-branca" id="convenios">
+  <div class="container conv">
+    <div class="revelar">
+      <span class="kicker">Convênios</span>
+      <h2 class="titulo-secao">Convênios atendidos</h2>
+      <p class="lead">Trabalhamos em parceria com os principais planos de saúde para oferecer agendamento e atendimento mais ágeis.</p>
+      <a href="convenios.html" class="btn-azul" style="margin-top:28px">Ver todos os convênios <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <div class="aviso"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Confirme a cobertura do seu plano e a necessidade de autorização antes do atendimento eletivo.</span></div>
+    </div>
+    <div class="revelar">
+      <div class="conv-lista">
+          <a href="convenios.html" class="conv-item">Allianz</a>
+          <a href="convenios.html" class="conv-item">Amil</a>
+          <a href="convenios.html" class="conv-item">Bradesco</a>
+          <a href="convenios.html" class="conv-item">Cabesp</a>
+          <a href="convenios.html" class="conv-item">Economus</a>
+          <a href="convenios.html" class="conv-item">Hapvida NotreDame Intermédica</a>
+          <a href="convenios.html" class="conv-item">Mediservice</a>
+          <a href="convenios.html" class="conv-item">Omint</a>
+          <a href="convenios.html" class="conv-item">Porto Seguro Saúde</a>
+          <a href="convenios.html" class="conv-item">Care Plus</a>
+          <a href="convenios.html" class="conv-item">Abertta</a>
+          <a href="convenios.html" class="conv-item">FAPES</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTATO / COMO CHEGAR ===================== -->
+<section class="secao" id="contato">
+  <div class="container">
+    <div class="cabeca-secao revelar">
+      <div>
+        <span class="kicker">Contato</span>
+        <h2 class="titulo-secao">Como chegar</h2>
+      </div>
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Portugal,+530,+Santo+Andr%C3%A9+-+SP" target="_blank" rel="noopener" class="link-seta">Abrir no Google Maps <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="contato">
+      <div class="contato-card revelar">
+        <div class="contato-linha">
+          <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><h3>Endereço</h3><p>Av. Portugal, 530 — Jardim Bela Vista<br>Santo André - SP · CEP 09040-000</p></div>
+        </div>
+        <div class="contato-linha">
+          <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
+          <div><h3>Central de atendimento</h3><p><a href="tel:+551121985000">(11) 2198-5000</a><br>PA clínico: ramal 3130 · PA ortopédico: ramal 3150</p></div>
+        </div>
+        <div class="contato-linha">
+          <span class="atalho-icone"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <div><h3>Horários</h3><p>Pronto-atendimento clínico: 24 horas, todos os dias<br>Pronto-atendimento ortopédico: todos os dias, das 8h às 21h</p></div>
+        </div>
+      </div>
+      <div class="mapa revelar">
+        <iframe title="Mapa: Av. Portugal, 530, Santo André" src="https://www.google.com/maps?q=Av.+Portugal,+530,+Santo+Andr%C3%A9+-+SP,+09040-000&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <div class="container">
+    <div class="rodape-grid">
+      <div class="rodape-marca">
+        <div class="rodape-logo">
+          <span class="badge"><img src="img/logo.png" alt="" width="31" height="50"></span>
+          <div><strong>Beneficência Portuguesa</strong><small>Hospital e Maternidade · Santo André</small></div>
+        </div>
+        <p>Sociedade Portuguesa de Beneficência de Santo André. Cuidado, tradição e acolhimento para você e sua família.</p>
+        <a href="tel:+551121985000" class="rodape-emerg"><span class="ponto" aria-hidden="true"></span>Pronto-atendimento 24h · (11) 2198-5000</a>
+      </div>
+      <nav aria-label="Institucional">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="institucional.html">Institucional</a></li>
+          <li><a href="institucional.html#historia">Nossa história</a></li>
+          <li><a href="institucional.html#missao">Missão e valores</a></li>
+          <li><a href="#">Notícias</a></li>
+          <li><a href="#">Trabalhe conosco</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Atendimento">
+        <h4>Atendimento</h4>
+        <ul>
+          <li><a href="#servicos">Pronto-atendimento</a></li>
+          <li><a href="#maternidade">Maternidade</a></li>
+          <li><a href="exames.html">Exames</a></li>
+          <li><a href="convenios.html">Convênios</a></li>
+          <li><a href="exames.html#resultados">Resultados de exames</a></li>
+          <li><a href="#">Ouvidoria</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h4>Contato</h4>
+        <ul class="rodape-contato">
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Av. Portugal, 530 — Jardim Bela Vista<br>Santo André - SP, 09040-000</span></li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><a href="tel:+551121985000">(11) 2198-5000</a></li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>PA clínico: 24 horas<br>PA ortopédico: 8h às 21h</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rodape-base">
+      <span>© <span id="ano">2026</span> Sociedade Portuguesa de Beneficência de Santo André · CNES 2080133<br>Diretor técnico: [NOME] — CRM-SP [NÚMERO]</span>
+      <div class="legal">
+        <a href="#">Política de privacidade</a>
+        <a href="#">Termos de uso</a>
+        <a href="#">Ouvidoria</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+(function () {
+  /* ---------- Conteúdo dos slides (edite aqui) ---------- */
+  var slides = [
+    {
+      selo: 'Hospital e Maternidade em Santo André',
+      titulo: 'Cuidado que acolhe, tradição que inspira confiança.',
+      texto: 'Atendimento humanizado, estrutura moderna e uma equipe médica pronta para cuidar de você e da sua família.',
+      cta: 'Agendar consulta', link: '#agendar'
+    },
+    {
+      selo: 'Maternidade',
+      titulo: 'Cada nova vida merece um começo cheio de cuidado.',
+      texto: 'Acompanhamos você do pré-natal ao parto e nos primeiros dias com o bebê, com segurança, carinho e uma equipe dedicada às mães e aos recém-nascidos.',
+      cta: 'Conhecer a maternidade', link: '#'
+    },
+    {
+      selo: 'Exames e diagnóstico',
+      titulo: 'Seus exames com agilidade e precisão.',
+      texto: 'Laboratório e diagnóstico por imagem no mesmo lugar. Consulte os resultados online, quando quiser.',
+      cta: 'Ver resultados de exames', link: 'exames.html#resultados'
+    }
+  ];
+  var INTERVALO = 7000; // ms entre slides
+
+  var midias = document.querySelectorAll('.slide-midia');
+  var bloco = document.getElementById('slide-texto');
+  var el = {
+    selo: document.getElementById('s-selo'),
+    titulo: document.getElementById('s-titulo'),
+    texto: document.getElementById('s-texto'),
+    cta: document.getElementById('s-cta'),
+    ctaTexto: document.getElementById('s-cta-texto'),
+    contador: document.getElementById('contador'),
+    pontos: document.getElementById('pontos')
+  };
+  var atual = 0, timer = null;
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  var reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  slides.forEach(function (_, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Ir para o slide ' + (i + 1));
+    b.addEventListener('click', function () { ir(i); reiniciar(); });
+    el.pontos.appendChild(b);
+  });
+
+  function ir(n) {
+    if (n === atual) return;
+    atual = (n + slides.length) % slides.length;
+    midias.forEach(function (m, i) { m.classList.toggle('ativo', i === atual); });
+    el.pontos.querySelectorAll('button').forEach(function (b, i) {
+      b.setAttribute('aria-current', i === atual ? 'true' : 'false');
+    });
+    el.contador.textContent = pad(atual + 1) + ' / ' + pad(slides.length);
+    bloco.classList.add('saindo');
+    setTimeout(function () {
+      var s = slides[atual];
+      el.selo.textContent = s.selo;
+      el.titulo.textContent = s.titulo;
+      el.texto.textContent = s.texto;
+      el.ctaTexto.textContent = s.cta;
+      el.cta.href = s.link;
+      bloco.classList.remove('saindo');
+    }, reduzMovimento ? 0 : 300);
+  }
+
+  function iniciar() { if (!reduzMovimento) timer = setInterval(function () { ir(atual + 1); }, INTERVALO); }
+  function parar() { clearInterval(timer); timer = null; }
+  function reiniciar() { parar(); iniciar(); }
+
+  el.pontos.firstChild.setAttribute('aria-current', 'true');
+  el.contador.textContent = '01 / ' + pad(slides.length);
+  document.getElementById('anterior').addEventListener('click', function () { ir(atual - 1); reiniciar(); });
+  document.getElementById('proximo').addEventListener('click', function () { ir(atual + 1); reiniciar(); });
+
+  var hero = document.getElementById('hero');
+  hero.addEventListener('mouseenter', parar);
+  hero.addEventListener('mouseleave', iniciar);
+  hero.addEventListener('focusin', parar);
+
+  // Arrastar no celular
+  var x0 = null;
+  hero.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) { ir(atual + (dx < 0 ? 1 : -1)); reiniciar(); }
+    x0 = null;
+  });
+
+  iniciar();
+
+  /* ---------- Submenus (desktop) ---------- */
+  document.querySelectorAll('.nav-link[aria-controls]').forEach(function (btn) {
+    var sub = document.getElementById(btn.getAttribute('aria-controls'));
+    var li = btn.parentElement;
+    function abrir(v) { btn.setAttribute('aria-expanded', v); sub.classList.toggle('aberto', v); }
+    btn.addEventListener('click', function () { abrir(btn.getAttribute('aria-expanded') !== 'true'); });
+    li.addEventListener('mouseenter', function () { abrir(true); });
+    li.addEventListener('mouseleave', function () { abrir(false); });
+    li.addEventListener('focusout', function (e) { if (!li.contains(e.relatedTarget)) abrir(false); });
+  });
+
+  /* ---------- Animação de entrada das seções ---------- */
+  var revelar = document.querySelectorAll('.revelar');
+  if ('IntersectionObserver' in window && !reduzMovimento) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    revelar.forEach(function (el) { io.observe(el); });
+  } else {
+    revelar.forEach(function (el) { el.classList.add('visivel'); });
+  }
+  document.getElementById('ano').textContent = new Date().getFullYear();
+
+  /* ---------- Menu mobile ---------- */
+  var gaveta = document.getElementById('gaveta');
+  var abrirBtn = document.getElementById('abrir-menu');
+  function menu(v) {
+    gaveta.classList.toggle('aberta', v);
+    gaveta.setAttribute('aria-hidden', !v);
+    abrirBtn.setAttribute('aria-expanded', v);
+    document.body.style.overflow = v ? 'hidden' : '';
+    if (v) gaveta.querySelector('[data-fechar].btn-icone').focus(); else abrirBtn.focus();
+  }
+  abrirBtn.addEventListener('click', function () { menu(true); });
+  gaveta.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (gaveta.classList.contains('aberta')) menu(false); }); });
+  gaveta.querySelectorAll('[data-fechar]').forEach(function (b) { b.addEventListener('click', function () { menu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gaveta.classList.contains('aberta')) menu(false); });
+})();
+</script>
+
+<script src="agendamento.js" defer></script>
+</body>
+</html>

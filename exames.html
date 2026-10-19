@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Exames e resultados online — Beneficência Portuguesa de Santo André</title>
+<meta name="description" content="Consulte seus resultados de exames online, confira os exames realizados e as orientações de preparo no Hospital Beneficência Portuguesa de Santo André.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1638A8;
+    --marinho:#0B1F5C;
+    --tinta:#0E1A33;
+    --texto-suave:#4A5878;
+    --azul-claro:#DCE4FA;
+    --fundo:#F4F6FB;
+    --borda:#E3E8F3;
+    --verde:#1FAE6E;
+    --verde-texto:#127A4E;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fundo);color:var(--tinta);font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  svg{flex-shrink:0}
+  .container{max-width:1360px;margin:0 auto;padding:0 24px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  :focus-visible{outline:3px solid #7FA2FF;outline-offset:2px}
+
+  /* ---------- Barra utilitária ---------- */
+  .util{background:var(--marinho);color:var(--azul-claro);font-size:13px}
+  .util .container{height:40px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .util-left,.util-right{display:flex;align-items:center;gap:20px}
+  .util a{display:inline-flex;align-items:center;gap:6px;color:var(--azul-claro);transition:color .2s}
+  .util a:hover{color:#fff}
+  .status-24h{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:600}
+  .ponto{width:8px;height:8px;border-radius:50%;background:#3DDC97;display:inline-block;box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulsar 2s infinite}
+  @keyframes pulsar{0%{box-shadow:0 0 0 0 rgba(61,220,151,.6)}70%{box-shadow:0 0 0 8px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
+
+  /* ---------- Cabeçalho ---------- */
+  .header{background:#fff;border-bottom:1px solid var(--borda);position:sticky;top:0;z-index:50}
+  .header .container{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-img{height:60px;width:auto;display:block}
+  .logo-texto{display:flex;flex-direction:column;line-height:1.15;white-space:nowrap}
+  .logo-nome{font-weight:800;font-size:18px;letter-spacing:-.2px;color:var(--marinho)}
+  .logo-sub{font-weight:500;font-size:12px;color:var(--texto-suave);letter-spacing:.3px}
+
+  .nav{display:flex;align-items:center;gap:24px;white-space:nowrap;margin:0;padding:0;font-size:15px;font-weight:600}
+  .nav > li{list-style:none;position:relative}
+  .nav ul{margin:0;padding:0}
+  .nav-link{display:inline-flex;align-items:center;gap:4px;padding:10px 0;color:var(--tinta);transition:color .2s;background:none;border:0;font-size:15px;font-weight:600;cursor:pointer}
+  .nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--azul)}
+  .nav-link svg{transition:transform .2s}
+  .nav-link[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .submenu{position:absolute;top:100%;left:-16px;min-width:240px;background:#fff;border:1px solid var(--borda);border-radius:16px;box-shadow:0 18px 40px rgba(8,24,74,.14);padding:8px;list-style:none;opacity:0;visibility:hidden;transform:translateY(6px);transition:all .2s}
+  .submenu.aberto{opacity:1;visibility:visible;transform:translateY(0)}
+  .submenu a{display:block;padding:10px 14px;border-radius:10px;font-weight:500;color:var(--tinta)}
+  .submenu a:hover{background:var(--fundo);color:var(--azul)}
+
+  .acoes{display:flex;align-items:center;gap:10px}
+  .btn-icone{width:44px;height:44px;border-radius:50%;border:1px solid #D5DCEB;background:#fff;color:var(--marinho);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+  .btn-icone:hover{background:var(--fundo)}
+  .btn-agendar{white-space:nowrap;height:44px;padding:0 22px;border-radius:999px;background:var(--azul);color:#fff;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+  .btn-agendar:hover{background:var(--marinho)}
+  .btn-menu{display:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--marinho);color:#fff;align-items:center;justify-content:center;cursor:pointer}
+
+  /* ---------- Menu mobile (gaveta) ---------- */
+  .gaveta{position:fixed;inset:0;z-index:100;visibility:hidden}
+  .gaveta.aberta{visibility:visible}
+  .gaveta-fundo{position:absolute;inset:0;background:rgba(8,24,74,.5);opacity:0;transition:opacity .25s}
+  .gaveta.aberta .gaveta-fundo{opacity:1}
+  .gaveta-painel{position:absolute;top:0;right:0;bottom:0;width:min(360px,88vw);background:#fff;padding:20px;display:flex;flex-direction:column;gap:8px;transform:translateX(100%);transition:transform .3s;overflow-y:auto}
+  .gaveta.aberta .gaveta-painel{transform:translateX(0)}
+  .gaveta-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .gaveta-painel a.item{display:block;padding:14px 12px;border-radius:12px;font-weight:600;font-size:16px}
+  .gaveta-painel a.item:hover{background:var(--fundo);color:var(--azul)}
+  .gaveta-painel .btn-agendar{justify-content:center;margin-top:12px;height:50px}
+
+  /* ---------- Slider ---------- */
+  .hero-wrap{max-width:1392px;margin:0 auto;padding:16px 16px 32px}
+  .hero{position:relative;min-height:640px;border-radius:28px;overflow:hidden;background:var(--marinho);display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+  .slide-midia{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;z-index:0}
+  .slide-midia.ativo{opacity:1}
+  .slide-midia img{width:100%;height:100%;object-fit:cover;object-position:70% 40%;transform:scale(1.04);transition:transform 7s ease}
+  .slide-midia.ativo img{transform:scale(1)}
+  /* Foto posicionada à direita, com a borda esquerda se dissolvendo no azul */
+  .slide-midia.direita{background:var(--marinho)}
+  .slide-midia.direita img{position:absolute;top:0;right:0;width:70%;object-position:50% 30%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
+  /* Slide 3 — coração 3D */
+  .slide-coracao{background:radial-gradient(circle at 68% 50%,#3346C8 0%,#1A2C8C 28%,#0B1F5C 62%)}
+  .slide-midia.slide-coracao{z-index:2;pointer-events:none}
+  .coracao-wrap{position:absolute;top:50%;left:59%;height:90%;aspect-ratio:663/1000;transform:translate(-50%,-50%);animation:flutuar 6s ease-in-out infinite}
+  .coracao-img{width:100%;height:100%;object-fit:contain;display:block;transform-origin:50% 60%;filter:drop-shadow(0 0 40px rgba(255,79,154,.35)) drop-shadow(0 0 80px rgba(63,140,255,.35));animation:batimento 1.2s ease-in-out infinite}
+  @keyframes flutuar{0%,100%{transform:translate(-50%,-50%) rotate(-2deg)}50%{transform:translate(-50%,-53%) rotate(2deg)}}
+  @keyframes batimento{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.045)}20%{transform:scale(1)}28%{transform:scale(1.025)}}
+  .card-ecg{position:absolute;top:32px;right:32px;z-index:3;padding:14px 18px 10px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;display:flex;flex-direction:column;gap:4px}
+  .card-ecg-rotulo{font-size:13px;font-weight:600;color:var(--azul-claro)}
+  .linha-ecg{stroke-dasharray:420;stroke-dashoffset:420;animation:ecg 2.4s linear infinite}
+  @keyframes ecg{to{stroke-dashoffset:0}}
+  .placeholder{position:absolute;inset:0;background:var(--azul);display:flex;align-items:center;justify-content:flex-end;padding-right:8%}
+  .placeholder span{width:38%;min-width:260px;aspect-ratio:4/3;border:2px dashed rgba(255,255,255,.55);border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;text-align:center;padding:16px}
+  .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,24,74,.94) 0%,rgba(8,24,74,.82) 34%,rgba(8,24,74,.35) 58%,rgba(8,24,74,0) 74%)}
+
+  .hero-conteudo{position:relative;z-index:2;padding:56px 56px 40px;max-width:680px;color:#fff;display:flex;flex-direction:column;gap:22px}
+  .slide-texto{display:flex;flex-direction:column;gap:22px;transition:opacity .35s,transform .35s}
+  .slide-texto.saindo{opacity:0;transform:translateY(8px)}
+  .selo{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);font-size:13px;font-weight:600;letter-spacing:.4px}
+  .hero h1,.hero h2.titulo{margin:0;font-size:56px;line-height:1.05;font-weight:800;letter-spacing:-1.4px}
+  .hero p{margin:0;font-size:18px;line-height:1.55;color:var(--azul-claro);max-width:520px}
+  .botoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+  .btn-branco{height:52px;padding:0 26px;border-radius:999px;background:#fff;color:var(--marinho);font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:transform .2s}
+  .btn-branco:hover{transform:translateY(-1px)}
+  .btn-contorno{height:52px;padding:0 24px;border-radius:999px;border:1.5px solid rgba(255,255,255,.6);color:#fff;font-weight:600;font-size:16px;display:inline-flex;align-items:center;transition:background .2s}
+  .btn-contorno:hover{background:rgba(255,255,255,.1)}
+
+
+  .controles{display:flex;align-items:center;gap:16px;margin-top:32px}
+  .contador{font-size:14px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
+  .pontos{display:flex;gap:6px;align-items:center}
+  .pontos button{height:6px;width:14px;border:0;padding:0;cursor:pointer;border-radius:999px;background:rgba(255,255,255,.4);transition:all .3s;position:relative}
+  .pontos button::before{content:"";position:absolute;inset:-19px -4px}
+  .pontos button[aria-current="true"]{width:36px;background:#fff}
+  .setas{display:flex;gap:8px;margin-left:8px}
+  .seta{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+  .seta:hover{background:rgba(255,255,255,.12)}
+  .seta.cheia{background:#fff;color:var(--marinho);border:0}
+  .seta.cheia:hover{background:var(--azul-claro)}
+
+  .card-pa{position:absolute;z-index:2;right:32px;bottom:32px;width:320px;background:#fff;border-radius:20px;padding:20px;box-shadow:0 18px 40px rgba(8,24,74,.22);display:flex;flex-direction:column;gap:14px}
+  .card-pa-topo{display:flex;align-items:center;gap:12px}
+  .card-pa-icone{width:44px;height:44px;border-radius:12px;background:#E8EDFB;color:var(--azul);display:inline-flex;align-items:center;justify-content:center}
+  .card-pa strong{display:block;font-weight:800;font-size:16px;color:var(--marinho)}
+  .card-pa .aberto{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--verde-texto)}
+  .card-pa .aberto i{width:7px;height:7px;border-radius:50%;background:var(--verde);display:inline-block}
+  .card-pa p{margin:0;font-size:14px;line-height:1.5;color:var(--texto-suave)}
+  .card-pa .ligar{height:46px;border-radius:12px;background:var(--marinho);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+  .card-pa .ligar:hover{background:var(--azul)}
+
+
+  /* =========================================================
+     HOME — seções abaixo do slider
+     ========================================================= */
+  html{scroll-behavior:smooth;scroll-padding-top:100px}
+  .secao{padding:96px 0}
+  .secao-branca{background:#fff}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--azul)}
+  .kicker::before{content:"";width:22px;height:2px;background:#E9A92B;border-radius:2px}
+  .titulo-secao{margin:14px 0 0;font-size:44px;line-height:1.08;font-weight:800;letter-spacing:-1.1px;color:var(--marinho)}
+  .lead{margin:18px 0 0;font-size:18px;line-height:1.6;color:var(--texto-suave);max-width:620px}
+  .cabeca-secao{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 32px;flex-wrap:wrap;margin-bottom:48px}
+  .link-seta{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--azul);transition:gap .2s}
+  .link-seta:hover{gap:12px}
+  .btn-azul{height:52px;padding:0 26px;border-radius:999px;background:var(--azul);color:#fff;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:background .2s}
+  .btn-azul:hover{background:var(--marinho)}
+
+  /* Atendimento rápido */
+  .atalhos{padding:8px 0 24px}
+  .atalhos-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .atalho{background:#fff;border:1px solid var(--borda);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:transform .25s,box-shadow .25s,border-color .25s}
+  a.atalho:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(8,24,74,.1);border-color:#C9D4F2}
+  .atalho-icone{width:48px;height:48px;border-radius:14px;background:#E8EDFB;color:var(--azul);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .atalho.destaque{background:var(--marinho);border-color:var(--marinho);color:#fff}
+  .atalho.destaque .atalho-icone{background:rgba(255,255,255,.12);color:#fff}
+  .atalho h3{margin:4px 0 0;font-size:18px;font-weight:800;color:var(--marinho)}
+  .atalho.destaque h3{color:#fff}
+  .atalho p{margin:0;font-size:14.5px;line-height:1.5;color:var(--texto-suave)}
+  .atalho.destaque p{color:var(--azul-claro)}
+  .atalho .tel{margin-top:auto;padding-top:6px;font-weight:800;font-size:17px;display:flex;flex-direction:column;gap:2px;color:var(--marinho)}
+  .atalho.destaque .tel{color:#fff}
+  .atalho .tel small{font-weight:500;font-size:13px;opacity:.8}
+  .atalho .tel a{color:inherit}
+  .atalho .mais{margin-top:auto;padding-top:6px;font-weight:700;font-size:15px;color:var(--azul);display:inline-flex;align-items:center;gap:6px}
+
+  /* O Hospital */
+  .sobre{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:72px;align-items:center}
+  .sobre-foto{position:relative}
+  .sobre-foto > img{width:100%;aspect-ratio:5/4;object-fit:cover;object-position:62% 50%;border-radius:28px;display:block}
+  .selo-ano{position:absolute;left:-20px;bottom:32px;background:#fff;border-radius:22px;padding:16px 22px;box-shadow:0 18px 40px rgba(8,24,74,.16);display:flex;align-items:center;gap:14px}
+  .selo-ano img{width:34px;height:auto}
+  .selo-ano strong{display:block;font-size:24px;font-weight:800;color:var(--marinho);line-height:1.1}
+  .selo-ano span{font-size:13px;color:var(--texto-suave);font-weight:500}
+  .lista-check{list-style:none;margin:28px 0 32px;padding:0;display:flex;flex-direction:column;gap:14px}
+  .lista-check li{display:flex;gap:12px;align-items:flex-start;font-size:16px;font-weight:600;color:var(--tinta)}
+  .lista-check svg{color:var(--azul);margin-top:1px}
+
+  /* Serviços */
+  .servicos-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .servico{position:relative;background:var(--fundo);border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:12px;overflow:hidden;transition:background .3s,transform .3s}
+  .servico:hover{background:var(--marinho);transform:translateY(-4px)}
+  .servico-icone{width:56px;height:56px;border-radius:16px;background:#fff;color:var(--azul);display:inline-flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
+  .servico:hover .servico-icone{background:rgba(255,255,255,.12);color:#fff}
+  .servico h3{margin:10px 0 0;font-size:21px;font-weight:800;color:var(--marinho);transition:color .3s}
+  .servico p{margin:0;font-size:15px;line-height:1.6;color:var(--texto-suave);transition:color .3s}
+  .servico .mais{margin-top:auto;padding-top:6px;font-weight:700;font-size:15px;color:var(--azul);display:inline-flex;align-items:center;gap:6px;transition:color .3s}
+  .servico:hover h3,.servico:hover .mais{color:#fff}
+  .servico:hover p{color:var(--azul-claro)}
+  .servico .num{position:absolute;top:28px;right:30px;font-size:14px;font-weight:700;color:#97A6CB;font-variant-numeric:tabular-nums;transition:color .3s}
+  .servico:hover .num{color:rgba(255,255,255,.55)}
+
+  /* Maternidade */
+  .mat{position:relative;border-radius:32px;overflow:hidden;background:var(--marinho);color:#fff;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:560px}
+  .mat-texto{padding:72px 64px;display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1}
+  .mat .kicker{color:#AFC3FF}
+  .mat h2{margin:0;font-size:44px;line-height:1.08;font-weight:800;letter-spacing:-1.1px}
+  .mat p{margin:0;font-size:17px;line-height:1.6;color:var(--azul-claro)}
+  .mat-etapas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 12px}
+  .mat-etapa{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:16px}
+  .mat-etapa b{display:block;font-size:13px;color:#F2BC4E;font-weight:800;letter-spacing:1px;margin-bottom:6px}
+  .mat-etapa span{font-size:15px;font-weight:700}
+  .mat-foto{position:relative}
+  .mat-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:45% 30%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}
+
+  /* Convênios */
+  .conv{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px;align-items:center}
+  .conv-lista{display:flex;flex-wrap:wrap;gap:12px}
+  .conv-item{padding:16px 22px;border-radius:16px;background:var(--fundo);border:1px solid var(--borda);font-weight:700;font-size:16px;color:var(--marinho);transition:border-color .2s,transform .2s}
+  .conv-item:hover{border-color:var(--azul);transform:translateY(-2px)}
+  .aviso{display:flex;gap:12px;align-items:flex-start;margin-top:28px;padding:16px 18px;border-radius:16px;background:#FFF6E3;color:#6B4A06;font-size:14.5px;line-height:1.5}
+  .aviso svg{color:#B7791F;margin-top:1px;flex-shrink:0}
+
+  /* Contato */
+  .contato{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px;align-items:stretch}
+  .contato-card{background:#fff;border:1px solid var(--borda);border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:28px}
+  .contato-linha{display:flex;gap:16px;align-items:flex-start}
+  .contato-linha h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--marinho)}
+  .contato-linha p{margin:0;font-size:15px;line-height:1.6;color:var(--texto-suave)}
+  .contato-linha a{color:var(--azul);font-weight:700}
+  .mapa{border-radius:28px;overflow:hidden;min-height:440px;background:#DCE4FA;border:1px solid var(--borda)}
+  .mapa iframe{width:100%;height:100%;min-height:440px;border:0;display:block}
+
+  /* Rodapé */
+  .rodape{background:#081A4F;color:var(--azul-claro);padding:80px 0 0;margin-top:24px}
+  .rodape-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:48px;padding-bottom:56px}
+  .rodape-marca{display:flex;flex-direction:column;gap:20px}
+  .rodape-logo{display:flex;align-items:center;gap:14px}
+  .rodape-logo .badge{width:64px;height:64px;border-radius:18px;background:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .rodape-logo img{height:50px;width:auto}
+  .rodape-logo strong{display:block;color:#fff;font-size:18px;font-weight:800;line-height:1.15}
+  .rodape-logo small{font-size:12.5px;color:#AFC3FF}
+  .rodape p{margin:0;font-size:14.5px;line-height:1.65}
+  .rodape h4{margin:0 0 18px;color:#fff;font-size:15px;font-weight:800;letter-spacing:.3px}
+  .rodape ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  .rodape ul a{font-size:14.5px;color:var(--azul-claro);transition:color .2s}
+  .rodape ul a:hover{color:#fff}
+  .rodape-contato li{display:flex;gap:10px;font-size:14.5px;line-height:1.5}
+  .rodape-contato svg{color:#7FA2FF;margin-top:2px}
+  .rodape-contato a{color:#fff !important;font-weight:700}
+  .rodape-emerg{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:14px;color:#fff;font-weight:600;align-self:flex-start;transition:background .2s}
+  .rodape-emerg:hover{background:rgba(255,255,255,.12)}
+  .rodape-base{border-top:1px solid rgba(255,255,255,.1);padding:24px 0 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;line-height:1.6;color:#A9B8DE}
+  .rodape-base a{color:#C5D2F2}
+  .rodape-base a:hover{color:#fff}
+  .rodape-base .legal{display:flex;gap:20px;flex-wrap:wrap}
+
+  /* Animação de entrada */
+  .js .revelar{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .js .revelar.visivel{opacity:1;transform:none}
+
+  @media (max-width:1100px){
+    .atalhos-grid,.servicos-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .sobre,.conv,.contato{grid-template-columns:minmax(0,1fr);gap:48px}
+    .contato{gap:24px}
+    .mat{grid-template-columns:minmax(0,1fr)}
+    .mat-foto{min-height:380px;order:-1}
+    .mat-foto img{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+    .mat-texto{padding:8px 48px 56px}
+    .rodape-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:760px){
+    .secao{padding:64px 0}
+    .titulo-secao,.mat h2{font-size:32px;letter-spacing:-.6px}
+    .lead{font-size:16px}
+    .atalhos-grid,.servicos-grid{grid-template-columns:minmax(0,1fr)}
+    .container{padding:0 18px}
+    .selo-ano{left:12px;bottom:12px;padding:12px 16px}
+    .selo-ano strong{font-size:20px}
+    .mat{border-radius:24px}
+    .mat-foto{min-height:280px}
+    .mat-texto{padding:8px 24px 40px}
+    .mat-etapas{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .mat-etapa{padding:12px}
+    .mat-etapa span{font-size:13px}
+    .contato-card{padding:28px}
+    .mapa,.mapa iframe{min-height:320px}
+    .rodape{padding-top:56px}
+    .rodape-grid{grid-template-columns:minmax(0,1fr);gap:36px}
+  }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width:1320px){
+    .nav{display:none}
+    .btn-menu{display:inline-flex}
+    .util-right{display:none}
+  }
+  @media (max-width:760px){
+    .util .container{height:auto;padding-top:8px;padding-bottom:8px}
+    .util-left{gap:14px;flex-wrap:wrap}
+    .header .container{height:72px}
+    .logo-img{height:50px}
+    .logo{gap:10px;min-width:0}
+    .logo-texto{white-space:normal;min-width:0}
+    .logo-nome{font-size:15px}
+    .logo-sub{font-size:11px}
+    .btn-agendar.desktop{display:none}
+    .hero-wrap{padding:12px 12px 24px}
+    .hero{min-height:960px;border-radius:22px}
+    .scrim{background:linear-gradient(180deg,rgba(8,24,74,.35) 0%,rgba(8,24,74,.85) 45%,rgba(8,24,74,.96) 100%)}
+    .hero-conteudo{padding:32px 22px 24px}
+    .hero h1,.hero h2.titulo{font-size:36px;letter-spacing:-.8px}
+    .hero p{font-size:16px}
+    .placeholder{justify-content:center;align-items:flex-start;padding:40px 0 0}
+    .placeholder span{width:70%;min-width:0}
+    .slide-midia.direita img{width:100%;object-position:55% 0;-webkit-mask-image:none;mask-image:none}
+    .slide-coracao{background:radial-gradient(circle at 50% 22%,#3346C8 0%,#1A2C8C 30%,#0B1F5C 65%)}
+    .card-ecg{display:none}
+    .coracao-wrap{left:50%;top:150px;height:260px}
+    .card-pa{position:relative;right:auto;bottom:auto;width:auto;margin:0 16px 16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important}
+  }
+
+  /* =========================================================
+     PÁGINA DE EXAMES
+     ========================================================= */
+  .migalha{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;color:var(--texto-suave);padding:20px 0 0}
+  .migalha a{color:var(--texto-suave)}
+  .migalha a:hover{color:var(--azul)}
+  .migalha [aria-current]{color:var(--marinho);font-weight:600}
+
+  /* Hero com celular ilustrado */
+  .ex-hero-wrap{max-width:1392px;margin:0 auto;padding:16px 16px 0}
+  .ex-hero{position:relative;border-radius:28px;overflow:hidden;background:#0B1F5C;color:#fff;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:24px;min-height:580px;isolation:isolate}
+  .ex-hero::before{content:"";position:absolute;width:760px;height:760px;right:-160px;top:50%;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle,#2448C4 0%,rgba(36,72,196,.35) 45%,rgba(11,31,92,0) 70%);z-index:-1}
+  .ex-hero::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 100%);mask-image:linear-gradient(90deg,transparent 40%,#000 100%)}
+  .ex-hero-texto{padding:64px 0 64px 56px;display:flex;flex-direction:column;gap:20px}
+  .ex-hero .selo{align-self:flex-start}
+  .ex-hero h1{margin:0;font-size:56px;line-height:1.04;font-weight:800;letter-spacing:-1.4px}
+  .ex-hero h1 em{font-style:normal;color:#9CC2FF}
+  .ex-hero p{margin:0;font-size:18px;line-height:1.6;color:var(--azul-claro);max-width:520px}
+  .ex-hero-beneficios{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:4px;font-size:14.5px;font-weight:600;color:#fff}
+  .ex-hero-beneficios span{display:inline-flex;align-items:center;gap:8px}
+  .ex-hero-beneficios svg{color:#7FE0B0}
+
+  .ex-cena{position:relative;height:100%;min-height:520px;display:flex;align-items:center;justify-content:center}
+  .celular{position:relative;width:280px;height:560px;border-radius:44px;background:#0A1440;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.12);transform:rotate(-4deg);margin-top:60px}
+  .celular-tela{width:100%;height:100%;border-radius:34px;background:#F4F6FB;overflow:hidden;display:flex;flex-direction:column;color:var(--tinta)}
+  .celular-ilha{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:84px;height:24px;border-radius:20px;background:#0A1440;z-index:2}
+  .app-topo{background:var(--marinho);color:#fff;padding:52px 18px 18px;display:flex;flex-direction:column;gap:4px}
+  .app-topo small{font-size:11px;color:#AFC3FF}
+  .app-topo strong{font-size:18px;font-weight:800}
+  .app-lista{padding:14px;display:flex;flex-direction:column;gap:8px}
+  .app-item{background:#fff;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(8,24,74,.06)}
+  .app-item i{width:34px;height:34px;border-radius:10px;background:#E8EDFB;color:var(--azul);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .app-item div{flex:1;min-width:0}
+  .app-item b{display:block;font-size:12.5px;font-weight:700;color:var(--marinho);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .app-item span{font-size:10.5px;color:var(--texto-suave)}
+  .chip{font-size:10px;font-weight:800;padding:4px 8px;border-radius:999px;white-space:nowrap}
+  .chip.ok{background:#DDF6EA;color:#0E6B42}
+  .chip.and{background:#FFF1D6;color:#8A5A00}
+  .app-botao{margin:6px 14px 0;height:40px;border-radius:12px;background:var(--azul);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px}
+  .notif{position:absolute;left:calc(50% - 330px);top:28px;width:250px;background:rgba(255,255,255,.96);color:var(--tinta);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 20px 40px rgba(0,0,0,.3);animation:notif 5s ease-in-out infinite}
+  .notif i{width:36px;height:36px;border-radius:10px;background:#1FAE6E;color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .notif b{display:block;font-size:13px;font-weight:800;color:var(--marinho)}
+  .notif span{font-size:12px;color:var(--texto-suave);line-height:1.4}
+  .selo-seguro{position:absolute;right:6%;bottom:70px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center;font-size:12.5px;font-weight:700}
+  .selo-seguro svg{color:#7FE0B0}
+  @keyframes notif{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  /* Passo a passo */
+  .passos3{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:p}
+  .passo3{position:relative;background:#fff;border:1px solid var(--borda);border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:12px;counter-increment:p}
+  .passo3::after{content:counter(p);position:absolute;top:22px;right:28px;font-size:64px;font-weight:800;line-height:1;color:#EEF2FB;letter-spacing:-2px}
+  .passo3 .servico-icone{background:#E8EDFB;position:relative;z-index:1}
+  .passo3 h3{margin:8px 0 0;font-size:20px;font-weight:800;color:var(--marinho);position:relative}
+  .passo3 p{margin:0;font-size:15px;line-height:1.65;color:var(--texto-suave)}
+  .passo3 a{color:var(--azul);font-weight:700}
+  .passos-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:36px}
+
+  /* Vantagens */
+  .vantagens{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .vantagem{border-radius:22px;padding:26px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:10px}
+  .vantagem svg{color:#9CC2FF}
+  .vantagem h3{margin:6px 0 0;font-size:18px;font-weight:800;color:#fff}
+  .vantagem p{margin:0;font-size:14.5px;line-height:1.6;color:var(--azul-claro)}
+  .faixa-escura{background:var(--marinho);color:#fff}
+  .faixa-escura .kicker{color:#AFC3FF}
+  .faixa-escura .titulo-secao{color:#fff}
+  .faixa-escura .lead{color:var(--azul-claro)}
+
+  /* Exames realizados */
+  .exames-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+
+  /* Preparo */
+  .preparo{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:start}
+  .checklist{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .checklist li{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--borda);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5;font-weight:500}
+  .checklist svg{color:var(--azul);margin-top:1px}
+  .prep-painel{background:#fff;border:1px solid var(--borda);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:16px}
+  .prep-painel h3{margin:0;font-size:20px;font-weight:800;color:var(--marinho)}
+  .busca{position:relative}
+  .busca svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--texto-suave);pointer-events:none}
+  .busca input{width:100%;height:52px;border-radius:16px;border:1px solid #D5DCEB;background:var(--fundo);padding:0 16px 0 46px;font:inherit;font-size:16px;color:var(--tinta)}
+  .busca input:focus{outline:none;border-color:var(--azul);background:#fff;box-shadow:0 0 0 3px rgba(22,56,168,.15)}
+  .prep-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .prep-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--fundo);transition:background .2s}
+  .prep-item:hover{background:#E8EDFB}
+  .prep-item .atalho-icone{width:42px;height:42px;border-radius:12px;background:#fff}
+  .prep-item div{flex:1;min-width:0}
+  .prep-item b{display:block;font-size:15.5px;font-weight:700;color:var(--marinho)}
+  .prep-item span{font-size:13.5px;color:var(--texto-suave)}
+  .prep-item a{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;background:#fff;border:1px solid #D5DCEB;font-size:13.5px;font-weight:700;color:var(--azul);white-space:nowrap;transition:background .2s,color .2s}
+  .prep-item a:hover{background:var(--azul);color:#fff;border-color:var(--azul)}
+  .prep-vazio{display:none;font-size:14.5px;color:var(--texto-suave);padding:8px 4px}
+  .prep-nota{font-size:13.5px;color:var(--texto-suave);line-height:1.5;margin:0}
+
+  .faq{display:flex;flex-direction:column;gap:10px;max-width:880px}
+  .faq details{background:#fff;border:1px solid var(--borda);border-radius:18px}
+  .faq details[open]{border-color:#C9D4F2}
+  .faq summary{list-style:none;cursor:pointer;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:16.5px;font-weight:700;color:var(--marinho)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary svg{flex-shrink:0;color:var(--azul);transition:transform .25s}
+  .faq details[open] summary svg{transform:rotate(45deg)}
+  .faq details p{margin:0;padding:0 22px 22px;font-size:15.5px;line-height:1.7;color:var(--texto-suave)}
+  .faq details a{color:var(--azul);font-weight:700}
+
+  .chamada{border-radius:32px;background:linear-gradient(115deg,#0B1F5C,#1638A8);color:#fff;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+  .chamada h2{margin:0;font-size:32px;line-height:1.1;font-weight:800;letter-spacing:-.7px}
+  .chamada p{margin:10px 0 0;font-size:16.5px;color:var(--azul-claro);max-width:520px;line-height:1.6}
+
+  @media (max-width:1100px){
+    .ex-hero{grid-template-columns:minmax(0,1fr)}
+    .ex-hero-texto{padding:48px 40px 0}
+    .ex-cena{min-height:480px}
+    .celular{margin-top:0}
+    .passos3,.exames-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .vantagens{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .preparo{grid-template-columns:minmax(0,1fr);gap:36px}
+  }
+  @media (max-width:760px){
+    .ex-hero-wrap{padding:12px 12px 0}
+    .ex-hero{border-radius:22px}
+    .ex-hero-texto{padding:36px 22px 0}
+    .ex-hero h1{font-size:38px;letter-spacing:-.8px}
+    .ex-hero p{font-size:16px}
+    .ex-cena{min-height:0;height:520px;align-items:flex-start;padding-top:56px}
+    .celular{transform:rotate(-4deg) scale(.8);transform-origin:50% 0;margin-top:0}
+    .notif{left:12px;top:12px;width:230px;z-index:2}
+    .selo-seguro{display:none}
+    .passos3,.exames-grid,.vantagens{grid-template-columns:minmax(0,1fr)}
+    .prep-painel{padding:20px;border-radius:22px}
+    .prep-item{flex-wrap:wrap}
+    .prep-item a{margin-left:56px}
+    .chamada{padding:32px 24px;border-radius:24px}
+    .chamada h2{font-size:26px}
+  }
+  .chip{font-style:normal}
+  .prep-item[hidden]{display:none}
+</style>
+<link rel="stylesheet" href="agendamento.css">
+</head>
+<body>
+
+<!-- ===================== BARRA UTILITÁRIA ===================== -->
+<div class="util">
+  <div class="container">
+    <div class="util-left">
+      <span class="status-24h"><span class="ponto" aria-hidden="true"></span>Pronto-atendimento 24 horas</span>
+      <a href="tel:+551121985000">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+        (11) 2198-5000
+      </a>
+      <a href="https://wa.me/[NUMERO]" target="_blank" rel="noopener">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg>
+        WhatsApp [NÚMERO]
+      </a>
+    </div>
+    <div class="util-right">
+      <a href="exames.html#resultados">Resultados de exames</a>
+      <a href="#">Trabalhe conosco</a>
+      <a href="#">Ouvidoria</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CABEÇALHO / MENU ===================== -->
+<header class="header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="Beneficência Portuguesa de Santo André — página inicial">
+      <img class="logo-img" src="img/logo.png" alt="" width="37" height="60">
+      <span class="logo-texto">
+        <span class="logo-nome">Beneficência Portuguesa</span>
+        <span class="logo-sub">Hospital e Maternidade · Santo André</span>
+      </span>
+    </a>
+
+    <nav aria-label="Menu principal">
+      <ul class="nav">
+        <li>
+          <button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-hospital">O Hospital
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul class="submenu" id="sub-hospital">
+            <li><a href="institucional.html#historia">Nossa História</a></li>
+            <li><a href="institucional.html#presidente">Palavra da Presidente</a></li>
+            <li><a href="institucional.html#superintendencia">Palavra da Superintendência</a></li>
+            <li><a href="institucional.html#missao">Visão, Missão e Valores</a></li>
+          </ul>
+        </li>
+        <li>
+          <button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-especialidades">Especialidades
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul class="submenu" id="sub-especialidades">
+            <li><a href="#">Cardiologia</a></li>
+            <li><a href="#">Ginecologia e Obstetrícia</a></li>
+            <li><a href="#">Ortopedia e Traumatologia</a></li>
+            <li><a href="pediatria.html">Pediatria</a></li>
+            <li><a href="pediatria.html#esp-lista">Ver todas (27)</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link" href="exames.html">Exames</a></li>
+        <li><a class="nav-link" href="index.html#maternidade">Maternidade</a></li>
+        <li><a class="nav-link" href="convenios.html">Convênios</a></li>
+        <li><a class="nav-link" href="#">Notícias</a></li>
+        <li><a class="nav-link" href="index.html#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="acoes">
+      <button class="btn-icone" type="button" aria-label="Buscar">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a href="#agendar" data-agendar class="btn-agendar desktop">Agendar consulta
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="btn-menu" type="button" aria-label="Abrir menu" aria-controls="gaveta" aria-expanded="false" id="abrir-menu">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Menu mobile -->
+<div class="gaveta" id="gaveta" aria-hidden="true">
+  <div class="gaveta-fundo" data-fechar></div>
+  <nav class="gaveta-painel" aria-label="Menu">
+    <div class="gaveta-topo">
+      <span class="logo-nome">Menu</span>
+      <button class="btn-icone" type="button" aria-label="Fechar menu" data-fechar>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <a class="item" href="institucional.html">O Hospital</a>
+    <a class="item" href="pediatria.html">Especialidades</a>
+    <a class="item" href="exames.html">Exames</a>
+    <a class="item" href="index.html#maternidade">Maternidade</a>
+    <a class="item" href="convenios.html">Convênios</a>
+    <a class="item" href="#">Notícias</a>
+    <a class="item" href="index.html#contato">Contato</a>
+    <a class="item" href="exames.html#resultados">Resultados de exames</a>
+    <a class="item" href="#">Trabalhe conosco</a>
+    <a class="item" href="#">Ouvidoria</a>
+    <a href="#agendar" data-agendar class="btn-agendar">Agendar consulta</a>
+  </nav>
+</div>
+
+
+<main>
+  <div class="container">
+    <nav class="migalha" aria-label="Você está em">
+      <a href="index.html">Início</a>
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <span aria-current="page">Exames e resultados</span>
+    </nav>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="ex-hero-wrap" aria-label="Resultados de exames online">
+    <div class="ex-hero">
+      <div class="ex-hero-texto">
+        <span class="selo">Exames e resultados</span>
+        <h1>Seus resultados de exames, <em>onde você estiver.</em></h1>
+        <p>Consulte os resultados dos exames feitos na Beneficência Portuguesa pelo celular ou pelo computador, a qualquer hora, sem precisar voltar ao hospital.</p>
+        <div class="botoes">
+          <a href="#" class="btn-branco link-portal" target="_blank" rel="noopener">Acessar meus resultados <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+          <a href="#agendar" data-agendar data-tipo="exame" class="btn-contorno">Agendar exame</a>
+        </div>
+        <div class="ex-hero-beneficios">
+          <span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Disponível 24 horas</span>
+          <span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Acesso com usuário e senha</span>
+          <span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Pelo celular ou computador</span>
+        </div>
+      </div>
+      <div class="ex-cena" aria-hidden="true">
+        <div class="celular">
+          <span class="celular-ilha"></span>
+          <div class="celular-tela">
+            <div class="app-topo"><small>Beneficência Portuguesa</small><strong>Meus exames</strong></div>
+            <div class="app-lista">
+                <div class="app-item"><i><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg></i><div><b>Hemograma completo</b><span>Liberado hoje</span></div><em class="chip ok">Disponível</em></div>
+                <div class="app-item"><i><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 6v12M8.5 9h7M8 12h8M8.5 15h7"/></svg></i><div><b>Raio-X de tórax</b><span>Liberado ontem</span></div><em class="chip ok">Disponível</em></div>
+                <div class="app-item"><i><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M3 12h2M19 12h2"/></svg></i><div><b>Tomografia</b><span>Previsão: 2 dias</span></div><em class="chip and">Em análise</em></div>
+                <div class="app-item"><i><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg></i><div><b>Glicemia em jejum</b><span>Liberado em 12/10</span></div><em class="chip ok">Disponível</em></div>
+            </div>
+            <div class="app-botao"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Ver resultado</div>
+          </div>
+        </div>
+        <div class="notif"><i><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Resultado disponível</b><span>O resultado do seu hemograma já pode ser consultado.</span></div></div>
+        <div class="selo-seguro"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> Acesso seguro</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMO ACESSAR ===================== -->
+  <section class="secao" id="resultados">
+    <div class="container">
+      <div class="cabeca-secao revelar">
+        <div>
+          <span class="kicker">Resultados online</span>
+          <h2 class="titulo-secao">Como consultar seus resultados</h2>
+          <p class="lead">Em três passos simples você acessa os seus exames, de qualquer lugar.</p>
+        </div>
+      </div>
+      <ol class="passos3">
+        <li class="passo3 revelar">
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.5"/><path d="M14 10h4M14 14h3"/></svg></span>
+          <h3>Receba seus dados de acesso</h3>
+          <p>Ao realizar o exame, você recebe no atendimento o seu usuário e a sua senha do portal de resultados.</p>
+        </li>
+        <li class="passo3 revelar">
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg></span>
+          <h3>Entre no portal</h3>
+          <p>Clique em <a href="#" class="link-portal" target="_blank" rel="noopener">Acessar meus resultados</a> e informe o seu usuário e a sua senha.</p>
+        </li>
+        <li class="passo3 revelar">
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span>
+          <h3>Veja e imprima</h3>
+          <p>Assim que o resultado for liberado, ele aparece no portal. Você pode visualizar, imprimir e mostrar ao seu médico.</p>
+        </li>
+      </ol>
+      <div class="passos-cta revelar">
+        <a href="#" class="btn-azul link-portal" target="_blank" rel="noopener">Acessar meus resultados <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== VANTAGENS ===================== -->
+  <section class="secao faixa-escura">
+    <div class="container">
+      <div class="cabeca-secao revelar">
+        <div>
+          <span class="kicker">Mais praticidade</span>
+          <h2 class="titulo-secao">Por que consultar online</h2>
+        </div>
+      </div>
+      <div class="vantagens">
+        <div class="vantagem revelar"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><h3>A qualquer hora</h3><p>O portal fica disponível 24 horas, todos os dias.</p></div>
+        <div class="vantagem revelar"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><h3>Sem sair de casa</h3><p>Não é preciso voltar ao hospital para retirar o resultado.</p></div>
+        <div class="vantagem revelar"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><h3>Com segurança</h3><p>Seus resultados ficam protegidos e são acessados só com usuário e senha.</p></div>
+        <div class="vantagem revelar"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><h3>Fácil de mostrar</h3><p>Abra o resultado no celular durante a consulta ou imprima para levar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXAMES REALIZADOS ===================== -->
+  <section class="secao secao-branca" id="exames">
+    <div class="container">
+      <div class="cabeca-secao revelar">
+        <div>
+          <span class="kicker">Exames</span>
+          <h2 class="titulo-secao">Exames que realizamos</h2>
+          <p class="lead">Estrutura completa de diagnóstico no próprio hospital, com equipes dedicadas e ambientes confortáveis.</p>
+        </div>
+        <a href="#agendar" data-agendar data-tipo="exame" class="link-seta">Agendar exame online <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="exames-grid">
+        <a href="#preparo" class="servico revelar">
+          <span class="num">01</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg></span>
+          <h3>Exames laboratoriais</h3>
+          <p>Análises clínicas realizadas no laboratório do próprio hospital, com resultados disponíveis online.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#preparo" class="servico revelar">
+          <span class="num">02</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 6v12M8.5 9h7M8 12h8M8.5 15h7"/></svg></span>
+          <h3>Raio-X</h3>
+          <p>Exames radiológicos para avaliação rápida de ossos, tórax e outras estruturas.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#preparo" class="servico revelar">
+          <span class="num">03</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M3 12h2M19 12h2"/></svg></span>
+          <h3>Tomografia computadorizada</h3>
+          <p>Imagens detalhadas do corpo para diagnósticos mais precisos.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#preparo" class="servico revelar">
+          <span class="num">04</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7c3.5 4 6 7.3 6 10.3a6 6 0 0 1-12 0c0-3 2.5-6.3 6-10.3z"/><path d="M12 19a6 6 0 0 0 6-6"/></svg></span>
+          <h3>Exames radiológicos contrastados</h3>
+          <p>Exames de imagem com contraste, realizados com preparo e acompanhamento da equipe.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#preparo" class="servico revelar">
+          <span class="num">05</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <h3>Exames oftalmológicos</h3>
+          <p>Avaliações complementares da visão e da saúde dos olhos.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="#preparo" class="servico revelar">
+          <span class="num">06</span>
+          <span class="servico-icone"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>
+          <h3>Exames e serviços complementares</h3>
+          <p>Exames que apoiam o diagnóstico e o tratamento indicados na sua consulta.</p>
+          <span class="mais">Ver preparo <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PREPARO ===================== -->
+  <section class="secao" id="preparo">
+    <div class="container preparo">
+      <div class="revelar">
+        <span class="kicker">Preparo de exames</span>
+        <h2 class="titulo-secao">Prepare-se para o seu exame</h2>
+        <p class="lead">Alguns exames exigem preparo, como jejum ou suspensão de medicamentos. Confira as orientações antes de vir.</p>
+        <ul class="checklist">
+          <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Pedido médico do exame</span></li>
+          <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Documento oficial com foto e carteirinha do convênio</span></li>
+          <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Exames anteriores, se houver</span></li>
+          <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span>Informe a equipe se você tem alergias ou usa medicamentos</span></li>
+        </ul>
+      </div>
+      <div class="prep-painel revelar">
+        <h3>Orientações de preparo</h3>
+        <div class="busca">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="busca-prep" class="sr-only">Buscar exame</label>
+          <input id="busca-prep" type="search" placeholder="Buscar exame" autocomplete="off">
+        </div>
+        <ul class="prep-lista" id="prep-lista">
+          <li class="prep-item">
+            <span class="atalho-icone"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg></span>
+            <div><b>Exames laboratoriais</b><span>Coleta de sangue, urina e outros materiais</span></div>
+            <a href="#"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Preparo (PDF)</a>
+          </li>
+          <li class="prep-item">
+            <span class="atalho-icone"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 6v12M8.5 9h7M8 12h8M8.5 15h7"/></svg></span>
+            <div><b>Raio-X</b><span>Radiografias simples</span></div>
+            <a href="#"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Preparo (PDF)</a>
+          </li>
+          <li class="prep-item">
+            <span class="atalho-icone"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M3 12h2M19 12h2"/></svg></span>
+            <div><b>Tomografia computadorizada</b><span>Com e sem contraste</span></div>
+            <a href="#"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Preparo (PDF)</a>
+          </li>
+          <li class="prep-item">
+            <span class="atalho-icone"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7c3.5 4 6 7.3 6 10.3a6 6 0 0 1-12 0c0-3 2.5-6.3 6-10.3z"/><path d="M12 19a6 6 0 0 0 6-6"/></svg></span>
+            <div><b>Exames radiológicos contrastados</b><span>Exames de imagem com contraste</span></div>
+            <a href="#"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Preparo (PDF)</a>
+          </li>
+          <li class="prep-item">
+            <span class="atalho-icone"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+            <div><b>Exames oftalmológicos</b><span>Exames complementares da visão</span></div>
+            <a href="#"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Preparo (PDF)</a>
+          </li>
+        </ul>
+        <p class="prep-vazio" id="prep-vazio">Nenhum exame encontrado. Ligue para (11) 2198-5200 e tire suas dúvidas.</p>
+        <p class="prep-nota">Em caso de dúvida sobre o preparo, ligue para a central de agendamento: <a href="tel:+551121985200" style="color:var(--azul);font-weight:700">(11) 2198-5200</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="secao secao-branca">
+    <div class="container">
+      <div class="cabeca-secao revelar">
+        <div>
+          <span class="kicker">Dúvidas</span>
+          <h2 class="titulo-secao">Perguntas frequentes</h2>
+        </div>
+      </div>
+      <div class="faq revelar">
+        <details>
+          <summary>Em quanto tempo o resultado fica disponível?<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p>O prazo varia de acordo com o tipo de exame. Ao realizar o exame, a recepção informa a data prevista para a liberação do resultado no portal.</p>
+        </details>
+        <details>
+          <summary>Onde encontro meu usuário e minha senha?<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p>Os dados de acesso ao portal são entregues no atendimento, quando você realiza o exame. Guarde o comprovante até o resultado ficar pronto.</p>
+        </details>
+        <details>
+          <summary>Esqueci minha senha. O que faço?<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p>Na tela de acesso do portal, clique em “Esqueceu sua senha?” e siga as instruções. Se precisar de ajuda, ligue para <a href="tel:+551121985200">(11) 2198-5200</a>.</p>
+        </details>
+        <details>
+          <summary>Preciso de pedido médico para fazer exames?<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p>Sim. Leve o pedido médico no dia do exame, junto com um documento com foto e a carteirinha do convênio.</p>
+        </details>
+        <details>
+          <summary>Posso mostrar o resultado para o meu médico pelo celular?<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p>Sim. Você pode abrir o resultado no portal durante a consulta ou imprimi-lo para levar.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CHAMADA ===================== -->
+  <section class="secao" style="padding-bottom:72px">
+    <div class="container">
+      <div class="chamada revelar">
+        <div>
+          <h2>Precisa agendar um exame?</h2>
+          <p>Central de agendamento de consultas e exames: (11) 2198-5200.</p>
+        </div>
+        <div class="botoes">
+          <a href="#agendar" data-agendar data-tipo="exame" class="btn-branco">Agendar exame <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="#" class="btn-contorno link-portal" target="_blank" rel="noopener">Ver resultados</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <div class="container">
+    <div class="rodape-grid">
+      <div class="rodape-marca">
+        <div class="rodape-logo">
+          <span class="badge"><img src="img/logo.png" alt="" width="31" height="50"></span>
+          <div><strong>Beneficência Portuguesa</strong><small>Hospital e Maternidade · Santo André</small></div>
+        </div>
+        <p>Sociedade Portuguesa de Beneficência de Santo André. Cuidado, tradição e acolhimento para você e sua família.</p>
+        <a href="tel:+551121985000" class="rodape-emerg"><span class="ponto" aria-hidden="true"></span>Pronto-atendimento 24h · (11) 2198-5000</a>
+      </div>
+      <nav aria-label="Institucional">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="institucional.html">Institucional</a></li>
+          <li><a href="institucional.html#historia">Nossa história</a></li>
+          <li><a href="institucional.html#missao">Missão e valores</a></li>
+          <li><a href="#">Notícias</a></li>
+          <li><a href="#">Trabalhe conosco</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Atendimento">
+        <h4>Atendimento</h4>
+        <ul>
+          <li><a href="index.html#servicos">Pronto-atendimento</a></li>
+          <li><a href="index.html#maternidade">Maternidade</a></li>
+          <li><a href="exames.html">Exames</a></li>
+          <li><a href="convenios.html">Convênios</a></li>
+          <li><a href="exames.html#resultados">Resultados de exames</a></li>
+          <li><a href="#">Ouvidoria</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h4>Contato</h4>
+        <ul class="rodape-contato">
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Av. Portugal, 530 — Jardim Bela Vista<br>Santo André - SP, 09040-000</span></li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><a href="tel:+551121985000">(11) 2198-5000</a></li>
+          <li><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>PA clínico: 24 horas<br>PA ortopédico: 8h às 21h</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rodape-base">
+      <span>© <span id="ano">2026</span> Sociedade Portuguesa de Beneficência de Santo André · CNES 2080133<br>Diretor técnico: [NOME] — CRM-SP [NÚMERO]</span>
+      <div class="legal">
+        <a href="#">Política de privacidade</a>
+        <a href="#">Termos de uso</a>
+        <a href="#">Ouvidoria</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  var reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Submenus (desktop) */
+  document.querySelectorAll('.nav-link[aria-controls]').forEach(function (btn) {
+    var sub = document.getElementById(btn.getAttribute('aria-controls'));
+    var li = btn.parentElement;
+    function abrir(v) { btn.setAttribute('aria-expanded', v); sub.classList.toggle('aberto', v); }
+    btn.addEventListener('click', function () { abrir(btn.getAttribute('aria-expanded') !== 'true'); });
+    li.addEventListener('mouseenter', function () { abrir(true); });
+    li.addEventListener('mouseleave', function () { abrir(false); });
+    li.addEventListener('focusout', function (e) { if (!li.contains(e.relatedTarget)) abrir(false); });
+  });
+
+  /* Menu mobile */
+  var gaveta = document.getElementById('gaveta');
+  var abrirBtn = document.getElementById('abrir-menu');
+  function menu(v) {
+    gaveta.classList.toggle('aberta', v);
+    gaveta.setAttribute('aria-hidden', !v);
+    abrirBtn.setAttribute('aria-expanded', v);
+    document.body.style.overflow = v ? 'hidden' : '';
+    if (v) gaveta.querySelector('[data-fechar].btn-icone').focus(); else abrirBtn.focus();
+  }
+  abrirBtn.addEventListener('click', function () { menu(true); });
+  gaveta.querySelectorAll('[data-fechar]').forEach(function (b) { b.addEventListener('click', function () { menu(false); }); });
+  gaveta.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (gaveta.classList.contains('aberta')) menu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gaveta.classList.contains('aberta')) menu(false); });
+
+  /* Animação de entrada */
+  var revelar = document.querySelectorAll('.revelar');
+  if ('IntersectionObserver' in window && !reduzMovimento) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    revelar.forEach(function (el) { io.observe(el); });
+  } else {
+    revelar.forEach(function (el) { el.classList.add('visivel'); });
+  }
+  document.getElementById('ano').textContent = new Date().getFullYear();
+
+  /* ===== ENDEREÇO DO PORTAL DE RESULTADOS (preencher) ===== */
+  var PORTAL_RESULTADOS = '';   // ex.: 'https://resultados.beneficenciasantoandre.com.br'
+  if (PORTAL_RESULTADOS) {
+    document.querySelectorAll('.link-portal').forEach(function (a) { a.href = PORTAL_RESULTADOS; });
+  }
+
+  /* Busca de preparo */
+  var busca = document.getElementById('busca-prep');
+  var itens = document.querySelectorAll('#prep-lista li');
+  var vazio = document.getElementById('prep-vazio');
+  var norm = function (t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
+  busca.addEventListener('input', function () {
+    var q = norm(busca.value.trim()), n = 0;
+    itens.forEach(function (li) { var ok = norm(li.textContent).indexOf(q) > -1; li.hidden = !ok; if (ok) n++; });
+    vazio.style.display = n ? 'none' : 'block';
+  });
+})();
+</script>
+<script src="agendamento.js" defer></script>
+</body>
+</html>

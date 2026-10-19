@@ -1,0 +1,15 @@
+Coloque aqui os logotipos oficiais dos convênios (PNG com fundo transparente, ~400 px de largura),
+com exatamente estes nomes de arquivo:
+
+allianz.png
+amil.png
+bradesco.png
+cabesp.png
+economus.png
+hapvida-notredame.png
+hapvida-notredame-intermedica.png
+mediservice.png
+omint.png
+porto-seguro-saude.png
+
+Enquanto um arquivo não existir, a página mostra o nome do convênio no lugar do logotipo.
